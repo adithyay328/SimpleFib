@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "simplefib"
+version = "0.1.0"
+description = "A simple study planner that I use"
+authors = ["Adithya Yerramsetty <adithya.yerramsetty@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+prompt-toolkit = "^3.0.37"
+mypy = "^1.0.1"
+flake8 = "^6.0.0"
+black = "^23.1.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
