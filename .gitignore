@@ -1,0 +1,8 @@
+# Ignore db.json
+db.json
+
+# Ignore pycache
+**/__pycache__/**
+
+# Ignore virtual environment
+.venv/**
