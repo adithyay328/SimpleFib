@@ -27,7 +27,7 @@ class Predictor:
 
         # This lookup contains a lookup from Task UID
         # to predicted date to study.
-        self.timeLookup: Dict[Topic, datetime] = {}
+        self.timeLookup: Dict[UID, datetime] = {}
 
     def predict(self) -> Dict[UID, datetime]:
         """
@@ -57,5 +57,7 @@ class Predictor:
                 resultDict[item.uid] = datetime.now(tz=timezone.utc) + timedelta(
                     days=actualPred
                 )
+        
+        self.timeLookup = resultDict
 
         return resultDict

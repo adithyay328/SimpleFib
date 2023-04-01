@@ -9,6 +9,7 @@ from prompt_toolkit.completion import FuzzyWordCompleter
 from simplefib.validators import *
 from simplefib.db import *
 from simplefib.uid import UID
+from simplefib.predict import Predictor
 
 app: PyCLIApp = PyCLIApp("> ")
 
@@ -152,6 +153,37 @@ def completeTask(params):
 
     # Update DB
     db.update(topic)
+
+@app.command("list_topics", "Lists all the topics in the study planner")
+def listTopics(params) -> None:
+    for record in db.recordDict.values():
+        if type(record) != Topic:
+            continue
+
+        parentSubject : Record = db.get(record.subjectUID)
+        assert type(parentSubject) == Subject
+
+        print(f"Topic: {record.name}, Subject : {parentSubject.name}, Fib Number: {record.fibNumber}")
+
+@app.command("predict_topics", "Predicts the schedule of topics to study")
+def predictTopics(params) -> None:
+    predictor : Predictor = Predictor(db)
+    predictor.predict()
+
+    # At this point, predictor.timeLookup is a dictionary
+    # mapping topic uids to dates
+
+    # Print all predictions, sorting in ascending
+    # order by key
+    for tup in sorted(predictor.timeLookup.items(), key=lambda x: x[1]):
+        # Print the topic, subject name and date as a string with the format
+        # day, month, year
+        topicObj : Record = db.get(tup[0])
+        assert type(topicObj) == Topic
+
+        subjectObj : Record = db.get(topicObj.subjectUID)
+        assert type(subjectObj) == Subject
+        print(f"Topic: {topicObj.name}, Subject: {subjectObj.name}, Date: {tup[1].strftime('%d-%B-%Y')}")
 
 def run():
     app.run()
