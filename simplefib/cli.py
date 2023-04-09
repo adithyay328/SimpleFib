@@ -94,6 +94,7 @@ def createTopic(params) -> None:
         if type(record) == Subject:
             if record.name == subjectName:
                 subjUID += record.uid.uid
+                break
 
     # Constructing the topic
     newTopic: Topic = Topic(UID(), topicName, UID(subjUID), True)
@@ -148,8 +149,9 @@ def completeTask(params):
     topic : Record = db.get(UID(topicUID))
     assert type(topic) == Topic
 
-    # Now, increase the fib count
+    # Now, increase the fib count and date
     topic.fibNumber += 1
+    topic.lastStudy = datetime.now(tz=timezone.utc)
 
     # Update DB
     db.update(topic)
